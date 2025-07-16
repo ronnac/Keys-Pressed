@@ -2,10 +2,6 @@
 
 # above line is magic to interpret the rest of the code as powershell
 
-# ##############################################################
-#              MUST SAVE AS UTF-8 WITH BOM
-# ##############################################################
-
 # basic logic from here
 # https://powershell.one/tricks/input-devices/detect-key-press
 
@@ -68,6 +64,30 @@ function Get-UTF8 {
     return $letter
 }
 
+$bkspc  = Get-UTF8(0x232B) # ⌫
+$enter = Get-UTF8(0x23ce) # ⏎
+$left = Get-UTF8(0x2190) # ←
+$up = Get-UTF8(0x2191) # ↑
+$right = Get-UTF8(0x2192) # →
+$down = Get-UTF8(0x2193) # ↓
+$win = Get-UTF8(0x229E) # ⊞
+$tab = Get-UTF8(0x2B7E) # ⭾
+$agrave = Get-UTF8(0xe0) # à
+$eacute = Get-UTF8(0xE9) # é
+$para = Get-UTF8(0xa7) # §
+$egrave = Get-UTF8(0xe8) # è
+$frenchc = Get-UTF8(0xe7) # ç
+$ugrave = Get-UTF8(0xf9) # ù
+$mu = Get-UTF8(0xb5) # µ
+$squared = Get-UTF8(0xb2) # ²
+$shifttabb = (Get-UTF8(0x21e7))+(Get-UTF8(0x2b7e)) # ⇧⭾
+$degree = Get-UTF8(0xb0) # °
+$pound = Get-UTF8(0xa3) # £
+$umlaut = Get-UTF8(0xa8) # ¨
+$cubed = Get-UTF8(0xb3) # ³
+$euro = Get-UTF8(0x20ac) # €
+$tick = Get-UTF8(0xb4) # ´
+
 # List of ASCII codes that will be listened to
 $list = @(8, 9, 13, 27)+@(32..128)+@(186..192)+@(219..226)
 # $list = 32..512
@@ -100,19 +120,19 @@ do {
             }
 
             Switch ($_){
-                8 {$letter = Get-UTF8(0x232B)} # ⌫
-                13 {$letter = Get-UTF8(0x23ce)} # ⏎
+                8 {$letter = $bkspc} # ⌫
+                13 {$letter = $enter} # ⏎
                 27 {$letter = "Esc"}
                 33 {$letter = "PgUp"}
                 34 {$letter = "PgDn"}
                 35 {$letter = "End"}
                 36 {$letter = "Home"}
-                37 {$letter = Get-UTF8(0x2190)} # ←
-                38 {$letter = Get-UTF8(0x2191)} # ↑
-                39 {$letter = Get-UTF8(0x2192)} # →
-                40 {$letter = Get-UTF8(0x2193)} # ↓
+                37 {$letter = $left} # ←
+                38 {$letter = $up} # ↑
+                39 {$letter = $right} # →
+                40 {$letter = $down} # ↓
                 46 {$letter = "Del"}
-                91 {$letter = Get-UTF8(0x229E)} # ⊞
+                91 {$letter = $win} # ⊞
             }
             
             if ($ctrlPressed) { $letter = "Ctrl+$letter" }
@@ -121,33 +141,33 @@ do {
             if ($_ -in @(48..59)+@(186..192)+@(9, 219, 220, 221, 222, 226)) {
                 if  (-not $shiftPressed) {
                     Switch ($_) {
-                        9 {$letter = Get-UTF8(0x2B7E)} # ⭾
-                        48 {$letter = Get-UTF8(0xe0)} # à
+                        9 {$letter = $tab} # ⭾
+                        48 {$letter = $agrave} # à
                         49 {$letter = "&"}
-                        50 {$letter = Get-UTF8(0xE9)} # é
+                        50 {$letter = $eacute} # é
                         51 {$letter = '"'}
                         52 {$letter = "'"}
                         53 {$letter = "("}
-                        54 {$letter = Get-UTF8(0xa7)} # §
-                        55 {$letter = Get-UTF8(0xe8)} # è
+                        54 {$letter = $para} # §
+                        55 {$letter = $egrave} # è
                         56 {$letter = "!"}
-                        57 {$letter = Get-UTF8(0xe7)} # ç
+                        57 {$letter = $frenchc} # ç
                         186 {$letter = "$"}
                         187 {$letter = "="}
                         188 {$letter = ","}
                         189 {$letter = "-"}
                         190 {$letter = ";"}
                         191 {$letter = ":"}
-                        192 {$letter = Get-UTF8(0xf9)} # ù
+                        192 {$letter = $ugrave} # ù
                         219 {$letter = ")"}
-                        220 {$letter = Get-UTF8(0xb5)} # µ
+                        220 {$letter = $mu} # µ
                         221 {$letter = "^"}
-                        222 {$letter = Get-UTF8(0xb2)} # ²
+                        222 {$letter = $squared} # ²
                         226 {$letter = "<"}
                     }
                 } else {
                     Switch ($_){
-                        9 {$letter = (Get-UTF8(0x21e7))+(Get-UTF8(0x2b7e))} # ⇧⭾
+                        9 {$letter = $shifttab} # ⇧⭾
                         186 {$letter = "*"}
                         187 {$letter = "+"}
                         188 {$letter = "?"}
@@ -155,10 +175,10 @@ do {
                         190 {$letter = "."}
                         191 {$letter = "/"}
                         192 {$letter = "%"}
-                        219 {$letter = Get-UTF8(0xb0)} # °
-                        220 {$letter = Get-UTF8(0xa3)} # £
-                        221 {$letter = Get-UTF8(0xa8)} # ¨
-                        222 {$letter = Get-UTF8(0xb3)} # ³
+                        219 {$letter = $degree} # °
+                        220 {$letter = $pound} # £
+                        221 {$letter = $umlaut} # ¨
+                        222 {$letter = $cubed} # ³
                         226 {$letter = ">"}
                     }
                 }
@@ -172,10 +192,10 @@ do {
                     51 {$letter="#"}
                     54 {$letter="^"}
                     57 {$letter="{"}
-                    69 {$letter=Get-UTF8(0x20ac)} # €
+                    69 {$letter=$euro} # €
                     186 {$letter="]"}
                     187 {$letter="~"}
-                    192 {$letter=Get-UTF8(0xb4)} # ´
+                    192 {$letter=$tick} # ´
                     220 {$letter='`'}
                     221 {$letter="["}
                     226 {$letter="\"}
@@ -195,7 +215,6 @@ do {
             
             # special letter sequence to stop the script
             $last5 = $global:buffer[-5..-1] -join ""
-            $mu = Get-UTF8(0xb5)
             $mu5 = "$mu$mu$mu$mu$mu"
             if ($last5 -eq $mu5){ #  "µµµµµ"
                 Exit
