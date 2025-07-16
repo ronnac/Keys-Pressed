@@ -1,2 +1,8 @@
 # Keys-Pressed
 Powershell script that shows the keys you pressed
+
+# Instructions
+This is a PowerShell Script disguised as Dos Batch Script (it restarts itself in PowerShell).
+
+# Current Limitations
+The script is based on a Belgian Azerty Keyboard.
